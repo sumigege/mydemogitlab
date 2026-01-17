@@ -1,0 +1,22 @@
+name: AI Code Reviewer
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+permissions: write-all
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v3
+
+      - name: AI Code Reviewer
+        uses: sumigege/mydemogitlab@main
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GITHUB_TOKEN 默认存在，直接使用即可，无需单独设为机密，否则会出现错误。[更多详情](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#about-the-github_token-secret)
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_MODEL: "gpt-4" # 可选，默认为"gpt-4"
+          exclude: "**/*.json, **/*.md" # 可选：用逗号分隔的排除模式
